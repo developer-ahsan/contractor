@@ -1,0 +1,65 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Spinner -->
+    <div class="category-box-icon d-flex" *ngIf="isLoading" >
+        <i class="fa fa-spinner spinner"></i>
+    </div>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Consultations</h6>
+    </div>
+    <div class="card-body" *ngIf="consultations" >
+      <div class="table-responsive">
+        <table class="table table-bordered" datatable id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Fat</th>
+              <th>Weight</th>
+              <th>Req Date</th>
+              <th>Req Time</th>
+              <th>Acc Date</th>
+              <th>Acc Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Fat</th>
+                <th>Weight</th>
+                <th>Req Date</th>
+                <th>Req Time</th>
+                <th>Acc Date</th>
+                <th>Acc Time</th>
+                <th>Status</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr *ngFor="let consultation of consultations" >
+              <td>{{consultation.first_name}} {{consultation.last_name}}</td>
+              <td>{{consultation.body_fat}}</td>
+              <td>{{consultation.body_weight}}</td>
+              <td>{{consultation.req_date}}</td>
+              <td>{{consultation.req_time}}</td>
+              <td *ngIf="consultation.status == 'pending'">-</td>
+              <td *ngIf="consultation.status == 'pending'">-</td>
+              <td *ngIf="consultation.status == 'declined'">-</td>
+              <td *ngIf="consultation.status == 'declined'">-</td>
+              <td *ngIf="consultation.status == 'approved'">{{consultation.acp_date}}</td>
+              <td *ngIf="consultation.status == 'approved'">{{consultation.acp_time}}</td>
+              <td >
+                <a href="#"><button title="Pending" *ngIf="consultation.status == 'pending'" class="btn btn-warning">Pending</button></a>
+                <a href="#"><button title="Decline" *ngIf="consultation.status == 'declined'" class="btn btn-danger">Declined</button></a>
+                <a><button title="Approved" *ngIf="consultation.status == 'approved'" class="btn btn-success">Approved</button></a>
+                <a><button title="Delete" class="btn btn-danger fa fa-trash-alt" (click)="delConsultation(consultation.id)" ></button></a>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

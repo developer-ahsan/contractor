@@ -1,0 +1,68 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Spinner -->
+    <div class="category-box-icon d-flex" *ngIf="isLoading">
+        <i class="fa fa-spinner spinner"></i>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <h6 class="m-0 font-weight-bold text-primary col-xl-6">All Jobs</h6>
+                <div class="col-xl-6" style="text-align: right;">
+                    <button class="primary" [routerLink]="['/dashboard/create-job/new']" routerLinkActive="router-link-active">Add new Job</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" *ngIf="jobs">
+                <table class="table table-bordered" datatable id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Client Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Employee</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Title</th>
+                            <th>Client Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Employee</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr *ngFor="let job of jobs">
+                            <td>{{job.title}}</td>
+                            <td>{{job.client_name}}</td>
+                            <td>{{job.client_address}}</td>
+                            <td>{{job.client_phone}}</td>
+                            <td>{{job.date}}</td>
+                            <td>{{job.time}}</td>
+                            <td>{{job.employee_id}}</td>
+                            <td>
+                                <div class="text-center">
+                                    <a [routerLink]="['/dashboard/create-job',job.id]" routerLinkActive="router-link-active"><button title="Edit" class="btn btn-primary fa fa-edit"></button></a>
+                                    <a><button title="Delete" class="btn btn-danger fa fa-trash-alt" (click)="openDialog(job.id)"></button></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ngx-spinner></ngx-spinner>

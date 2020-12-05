@@ -1,0 +1,69 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary col-xl-6" *ngIf="type=='new'">Create New Client</h6>
+        <h6 class="m-0 font-weight-bold text-primary col-xl-6" *ngIf="type!='new'">Update Client</h6>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="jobDetails">
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Select Employee</mat-label>
+                <mat-select formControlName="employee">
+                    <mat-option *ngFor="let form of employees" [value]="form">{{form}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Job Title</mat-label>
+                <input matInput placeholder="Job Title*" name="first" formControlName="title" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Job Description</mat-label>
+                <textarea matInput placeholder="Job Description*" formControlName="description" name="lastName" required></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Date</mat-label>
+                <input matInput [min]="minDates" type="date" placeholder="Job Date*" formControlName="date" name="streetAddress" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Time</mat-label>
+                <input matInput placeholder="Job Time*" formControlName="time" type="time" name="apptNumber" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Client Name</mat-label>
+                <input matInput placeholder="Client Name*" formControlName="clientName" name="city" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Client Address</mat-label>
+                <input matInput placeholder="Client Address*" formControlName="clientAddress" name="city" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="mat-form-field-width">
+                <mat-label>Phone Number</mat-label>
+                <input matInput placeholder="Phone Number*" formControlName="clientPhone" type="number" name="country" required>
+            </mat-form-field>
+            <div class="d-flex">
+                <mat-form-field appearance="outline" class="mat-form-field-width">
+                    <mat-label>Select Forms</mat-label>
+                    <mat-select formControlName="formType">
+                        <mat-option *ngFor="let form of formTypes" [value]="form">{{form}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="mat-form-field-width mt-3" *ngIf="this.jobDetails.get('formType').value != ''">
+                    <!-- <mat-form-field appearance="outline" > -->
+                    <input class="form-control" type="file" formControlName="formLink" (change)="onFileChange($event)">
+                </div>
+            </div>
+            <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
+            <!-- </mat-form-field> -->
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Notes</mat-label>
+                <textarea matInput placeholder="Notes*" formControlName="notes" name="lastName" required></textarea>
+            </mat-form-field>
+            <div *ngIf="type=='new'">
+                <button (click)="createJob()" mat-raised-button color="primary">Create New Client</button>
+            </div>
+            <div *ngIf="type!='new'">
+                <button (click)="updateJobs()" mat-raised-button color="primary">Update Client</button>
+            </div>
+        </form>
+    </div>
+</div>
+<ngx-spinner></ngx-spinner>

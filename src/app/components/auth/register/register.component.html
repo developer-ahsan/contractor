@@ -1,0 +1,57 @@
+<div style="text-align: -webkit-center;">
+<div class="card border-0" >
+    <!-- <img class="img-fluid text-center" width="85%" src="../../../../assets/static/logo-black.svg" alt="Card image cap"> -->
+    <div class="card-body" style="background-color: white;">
+        <h1 class="card-title">Create New Account</h1>
+        <p class="card-text">Use your email to create new account.</p>
+        <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit()" id="login-form" class="needs-validation">
+            
+            <div class="form-label-group">
+                <!-- <label for="emailaddress">Email address</label> -->
+                <input type="text" class="form-control" placeholder="First Name"
+                formControlName="firstname" id="firstname"
+                      [ngClass]="{ 'is-invalid': f.firstname.errors && (f.firstname.touched || submitted), 'is-valid' : f.firstname.valid }" required 
+                autofocus>
+                <div class="invalid-feedback">First_Name is required.</div>
+              </div>
+              <div class="form-label-group">
+                <!-- <label for="emailaddress">Email address</label> -->
+                <input type="text" class="form-control" placeholder="Last Name"
+                formControlName="lastname" id="firstname"
+                      [ngClass]="{ 'is-invalid': f.lastname.errors && (f.lastname.touched || submitted), 'is-valid' : f.lastname.valid }" required 
+                autofocus>
+                <div class="invalid-feedback">Last_Name is required.</div>
+              </div>
+            <div class="form-label-group">
+              <!-- <label for="emailaddress">Email address</label> -->
+              <input type="email" class="form-control" placeholder="Email address"
+              formControlName="email" id="emailaddress"
+                    [ngClass]="{ 'is-invalid': f.email.errors && (f.email.touched || submitted), 'is-valid' : f.email.valid }" required 
+              autofocus>
+              <div class="invalid-feedback">Email is required.</div>
+            </div>
+      
+            <div class="form-label-group">
+              <!-- <label for="password">Password</label> -->
+              <input type="password" class="form-control" formControlName="password" id="password"
+              placeholder="Password"
+              [ngClass]="{ 'is-invalid': f.password.errors && (f.password.touched || submitted) , 'is-valid' : f.password.valid}"
+              required>
+              <div class="invalid-feedback">Password is required.</div>
+
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" name="checkbox" class="form-check-input" formControlName="checkbox" id="checkbox" required="true" [ngClass]="{ 'is-invalid': f.checkbox.errors && (f.checkbox.touched || submitted) , 'is-valid' : f.checkbox.valid}">
+                <label class="form-check-label" for="checkbox">I agree <a href="#">Terms & Condtions</a></label>
+                <div class="invalid-feedback">This field must be checked.</div>
+            </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="submitted || registerForm.invalid">Sign Up Now</button>
+      </form>
+        <div style="margin-top: 5px;">
+            <label>Already have account <a [routerLink]="['/login']" routerLinkActive="router-link-active" >Sign In</a></label>
+        </div>
+    </div>
+</div>
+
+</div>
+<ngx-spinner></ngx-spinner>
