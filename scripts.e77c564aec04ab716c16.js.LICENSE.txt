@@ -1,0 +1,5 @@
+/*! DataTables 1.10.22
+ * ©2008-2020 SpryMedia Ltd - datatables.net/license
+ */
+
+/*! jQuery v3.5.1 | (c) JS Foundation and other contributors | jquery.org/license */
