@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <pdf-viewer [original-size]="false" [autoresize]="true" [src]="pdfFilePath" [render-text]="true" style="display: block;"></pdf-viewer>
+        </div>
+        <div class="card-header py-3">
+            <div class="row">
+                <button class="btn btn-primary w-80" (click)="AddSignature()">Accept & Sign</button>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner></ngx-spinner>

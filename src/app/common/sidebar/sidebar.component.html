@@ -1,17 +1,17 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center">
 
-        <div class="sidebar-brand-text mx-3"><img src="../../../assets/static/logo.png" style="width: 60px;" /></div>
-    </a>
+    <div style="background: white;padding: 5px;" class="nav-item d-md-block d-none"><img src="/assets/static/image.png" style="width: 150px;" /></div>
+    <div style="background: white;padding: 5px;" ngcontent-dgd-c50="" class="nav-item d-block d-sm-none"><img ngcontent-dgd-c50="" src="/assets/static/image.png" style="width: 90px;" /></div>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
-    <div *ngIf="isAdmin == 'true'">
+    <div *ngIf="isAdmin == 'admin' || isAdmin == 'subadmins'">
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
             <a class="nav-link" [routerLink]="['/dashboard']">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
@@ -22,20 +22,97 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
+            Users Area
+        </div>
+        <li class="nav-item" *ngIf="isAdmin == 'admin'" routerLinkActive="active">
+            <a class="nav-link collapsed" [routerLink]="['subadminList']">
+                <i class="fas fa-fw fa-cog fa-user"></i>
+                <span>Sub Admins</span>
+            </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" [routerLink]="['employeesList']">
+                <i class="fas fa-fw fa-cog fa-users"></i>
+                <span>Employees</span>
+            </a>
+        </li>
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Profile</h6>
+                    <a class="collapse-item" [routerLink]="['profile/updatePass']">Update Password</a>
+                </div>
+            </div>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Sub Admins</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Sub Admins</h6>
+                    <a class="collapse-item" href="buttons.html">Add New</a>
+                    <a class="collapse-item" href="cards.html">Sub Admins</a>
+                </div>
+            </div>
+        </li> -->
+        <!-- Heading -->
+        <div class="sidebar-heading">
             Jobs Area
         </div>
-        <li class="nav-item">
+        <li class="nav-item" routerLinkActive="active">
             <a class="nav-link collapsed" [routerLink]="['jobs']">
                 <i class="fas fa-fw fa-cog fa-spin"></i>
                 <span>Jobs</span>
             </a>
         </li>
     </div>
+    <div *ngIf="isAdmin == 'employee'">
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active" routerLinkActive="active">
+            <a (click)="onclick()" class="nav-link" [routerLink]="['/dashboard/Employeejobs']">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Jobs</span></a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" (click)="onclick()" [routerLink]="['/dashboard/calendar']">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Calendar</span></a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+            <a (click)="onclick()" class="nav-link" [routerLink]="['/dashboard/signature']">
+                <i class="fas fa-fw fa-copy"></i>
+                <span>Update Your Signature</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Profile</h6>
+                    <a (click)="onclick()" class="collapse-item" [routerLink]="['profile/updatePass']">Update Password</a>
+                </div>
+            </div>
+        </li>
+    </div>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
     <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
+    <!-- <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
+    </div> -->
 </ul>
 <!-- End of Sidebar -->

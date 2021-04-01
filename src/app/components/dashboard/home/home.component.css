@@ -1,3 +1,13 @@
 .margin {
     margin: 3px;
 }
+
+.fc-agenda-slots td div {
+    height: 6px;
+    line-height: 6px;
+}
+
+.fc-agenda-axis {
+    font-size: 1px;
+    line-height: 1px;
+}

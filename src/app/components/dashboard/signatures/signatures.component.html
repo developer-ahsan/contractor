@@ -1,0 +1,42 @@
+<div class="container-fluid">
+
+    <div style="background-color: rgb(190, 184, 183);max-width: 500px;width: 100%;">
+        <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>
+    </div>
+    <div class="mt-1" style="max-width: 500px;">
+        <button style="width: 50%;" (click)="clearPad()" class="btn btn-danger">Clear</button>
+        <button style="width: 50%;" (click)="addSignature()" class="btn btn-success">Add</button>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <h6 class="m-0 font-weight-bold text-primary col-xl-6">Previous Signature</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" *ngIf="signaturesList">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Signature</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let sign of signaturesList; let j=index">
+                            <td>
+                                <img width="80px" src="{{api.imageUrl + sign.image}}" alt="">
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" style="color: white;" (click)="delSignature(sign.id)">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner></ngx-spinner>

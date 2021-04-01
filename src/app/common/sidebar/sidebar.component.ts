@@ -11,17 +11,32 @@ export class SidebarComponent implements OnInit {
   constructor(
   ) {
     this.isAdmin = localStorage.getItem('isAdmin');
+    console.log(this.isAdmin);
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     // Toggle the side navigation
-  $('#sidebarToggle, #sidebarToggleTop').on('click', function(e) {
-    $('body').toggleClass('sidebar-toggled');
-    $('.sidebar').toggleClass('toggled');
-    if ($('.sidebar').hasClass('toggled')) {
+    if(window.innerWidth < 600) {
+    if (!$('.sidebar').hasClass('toggled')) {
       $('.sidebar .collapse').collapse('hide');
+      $('.sidebar').toggleClass('toggled');
     }
-  });
+    }
+    
+  }
+  onclick() {
+    if(window.innerWidth < 600) {
+    
+    if (!$('.sidebar').hasClass('toggled')) {
+      $('.sidebar .collapse').collapse('hide');
+      $('.sidebar').toggleClass('toggled');
+    }
+  }
+  }
+  ngAfterViewInit(): void {
+    const script = document.createElement('script');
+    script.src = "./assets/admin-assets/js/sb-admin-2.min.js";
+    document.body.appendChild(script); 
   }
 
 }

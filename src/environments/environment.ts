@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://online-einkauf.com/contractor/dashboard/public/api/',
-  // imgUrl: 'http://localhost:4000/uploads/',
-  imgUrl: 'https://home.myvgym.ca/uploads/',
-  // apiUrl: 'http://localhost/contractorjob/public/api/',
+  // imgUrl: 'https://tradeviser.com.au/backend/',
+  // apiUrl: 'https://tradeviser.com.au/backend/public/api/',
+  imgUrl: 'http://localhost/Contractor/',
+  apiUrl: 'http://localhost/Contractor/public/api/',
   PUSHER_API_KEY: '5d55da894e2d4107129a',
   PUSHER_API_CLUSTER: 'ap2'
 };

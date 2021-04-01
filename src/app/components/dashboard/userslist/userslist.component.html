@@ -1,0 +1,145 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Spinner -->
+    <div class="category-box-icon d-flex" *ngIf="isLoading">
+        <i class="fa fa-spinner spinner"></i>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <h6 class="m-0 font-weight-bold text-primary col-xl-6">All Employees</h6>
+                <div class="col-xl-6" style="text-align: right;">
+                    <button class="primary" data-toggle="modal" data-target="#addEmployeeModal">Add new Employee</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" *ngIf="employeesList">
+                <table class="table table-bordered" datatable id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let employee of employeesList">
+                            <td>{{employee.f_name + ' ' + employee.l_name}}</td>
+                            <td>{{employee.email}}</td>
+                            <td>{{employee.phone}}</td>
+                            <td *ngIf="employee.added_by == 1">Super Admin</td>
+                            <td *ngIf="employee.added_by == 0">Sub Admin</td>
+                            <td>
+                                <div class="text-center">
+                                    <a data-toggle="modal" (click)="getEmployeesById(employee.id)" data-target="#updateEmployeeModal" routerLinkActive="router-link-active"><button title="Edit" class="btn btn-primary fa fa-edit"></button></a>
+                                    <a data-toggle="modal" data-target="#delModal" (click)="setId(employee.id)"><button title="Delete" class="btn btn-danger fa fa-trash-alt"></button></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- add employy Modal-->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addEmployee">
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="First Name*" name="first" formControlName="f_name" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Last Name*" formControlName="l_name" name="lastName" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email*" formControlName="email" name="s" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Phone</mat-label>
+                        <input matInput type="text" placeholder="Phone*" formControlName="phone" name="streetAddress" required>
+                    </mat-form-field>
+                    <div>
+                        <button (click)="addEmployees()" mat-raised-button color="primary" [disabled]="addEmployee.invalid">Add Employee</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Update Employee Modal-->
+<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="updateEmployee">
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="First Name*" name="first" formControlName="f_name" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Last Name*" formControlName="l_name" name="lastName" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email*" formControlName="email" name="s" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Phone</mat-label>
+                        <input maxlength="10" matInput type="text" placeholder="Phone*" formControlName="phone" name="streetAddress" required>
+                    </mat-form-field>
+                    <!-- <mat-form-field appearance="outline" class="mat-form-field-width">
+                        <mat-label>Designation</mat-label>
+                        <input matInput type="text" placeholder="Designation*" formControlName="designation" name="streetAddresss" required>
+                    </mat-form-field> -->
+                    <div>
+                        <button aria-hidden="true" (click)="updateEmployees()" mat-raised-button color="primary" [disabled]="updateEmployee.invalid">Update Employee</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete employy Modal-->
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+            </div>
+            <div class="modal-body">Select "yes" below if you are want to delete this user</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" style="color: white;" (click)="delete()">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner></ngx-spinner>

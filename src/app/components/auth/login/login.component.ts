@@ -60,14 +60,16 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('user_id', resp.user.id);
         this.Auth.changeAuthStatus(true);
         this.Auth.setAuthUser(resp.user);
-        if (resp.user.user_type == 'admin') {
-          this.Auth.setIsAdmin(true);
-        } 
-        this.toastr.success(resp.msg);
+        this.Auth.setIsAdmin(resp.user.user_type);
+        this.toastr.success(resp.msg,'' ,{
+          timeOut: 1000
+        });
         this.loginForm.reset();
         this.router.navigate(['/dashboard']);
       } else {
-        this.toastr.error(resp.msg);
+        this.toastr.error(resp.msg,'' ,{
+          timeOut: 1000
+        });
       }
     });
   }

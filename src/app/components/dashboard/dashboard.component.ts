@@ -1,5 +1,8 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+declare var JQuery;
+declare var $: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -9,17 +12,24 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
   isAdmin: string;
   constructor(
-    private router: Router
+    private auth: AuthService,
+    private router: Router,
   ) {
     this.isAdmin = localStorage.getItem('isAdmin');
   }
-
   ngOnInit() {
-    if(this.isAdmin == 'true') {
-      this.router.navigate(['dashboard'], {replaceUrl: true});
+    if(this.isAdmin == 'employee') {
+      this.router.navigate(['dashboard/Employeejobs'], {replaceUrl: true});
     } else {
-      this.router.navigate(['dashboard/client'],{replaceUrl: true});
+      this.router.navigate(['dashboard'],{replaceUrl: true});
     }
+  }
+  closeNav() {
+    $('.navbar-collapse').collapse('hide');
+  }
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['']);
   }
 
 }

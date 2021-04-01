@@ -19,15 +19,17 @@
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Jobs</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{counters.jobs}}</div>
+                        <a [routerLink]="['jobs']">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Jobs</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{counters.jobs}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -36,36 +38,93 @@
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Employees</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        <a [routerLink]="['employeesList']">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Employees</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{counters.employee}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas  fa-users fa-2x text-gray-300"></i>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas  fa-users fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
 
             <!-- Pending Requests Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-4 col-md-6 mb-4" *ngIf="isAdmin=='admin'">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Jobs</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{counters.jobs}}</div>
+                        <a [routerLink]="['subadminList']">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Sub Admins</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{counters.sub}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users fa-2x text-gray-300"></i>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-comments fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="card-body" [hidden]="disPlayjob">
+        <div class="table-responsive" *ngIf="jobsList">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>JOB_Id</th>
+                        <th>Title</th>
+                        <th>Client Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Employee</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let job of jobsList">
+                        <td>J{{ padLeft(job.id, '0', 5)}}</td>
+                        <td>{{job.name}}</td>
+                        <td>{{job.client_name}}</td>
+                        <td>{{job.date | date: 'dd-MM-yyyy'}}</td>
+                        <td>{{timeFormat(job.time)}}</td>
+                        <td>
+                            <div *ngFor="let item of job.jobassigned">{{item.employees.f_name + ' ' + item.employees.l_name }}, </div>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <a [routerLink]="['/dashboard/jobdetails',job.id]" routerLinkActive="router-link-active"><button title="Edit" class="btn btn-primary fa fa-eye"></button></a>
+                                <!-- <a [routerLink]="['/dashboard/create-job',job.id]" routerLinkActive="router-link-active"><button title="Edit" class="btn btn-primary fa fa-edit"></button></a> -->
+                                <!-- <a><button title="Delete" class="btn btn-danger fa fa-trash-alt" (click)="openDialog(job.id)"></button></a> -->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-12 ">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Calendar</h6>
+                </div>
+                <div class="card-body">
+                    <full-calendar [options]="calendarOptions" deepChangeDetection="true"></full-calendar>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
-<!-- /.container-fluid -->
+<ngx-spinner></ngx-spinner>

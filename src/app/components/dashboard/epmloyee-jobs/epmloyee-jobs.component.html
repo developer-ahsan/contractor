@@ -1,0 +1,264 @@
+<!-- Begin Page Content -->
+<div class="p-2">
+    <!-- Pending Jobs -->
+    <!-- <div class="text-center d-block d-sm-none mb-3">
+        <img src="/assets/static/image.png" style="width: 150px;" />
+    </div> -->
+    <div class="row text-center">
+        <div *ngIf="pendingJobs" class="d-block d-sm-none col-6 col-6 mb-4">
+            <div class="card border-4 border-warning shadow h-100 py-2" [routerLink]="['/dashboard/jobslist','pending',pendingJobs.length]">
+                <div class="card-body" style="padding: 10px;">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col">
+                            <div class="h6 font-weight-bold text-warning text-uppercase mb-1">Pending Jobs</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{pendingJobs.length}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="acceptedJobs" class="d-block d-sm-none col-6 col-6 mb-4">
+            <div class="card border-success shadow h-100 py-2" [routerLink]="['/dashboard/jobslist','accepted',acceptedJobs.length]">
+                <div class="card-body" style="padding: 10px;">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col">
+                            <div class="h6 font-weight-bold text-success text-uppercase mb-1">Accepted Jobs</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{acceptedJobs.length}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="completedJobs" class="d-block d-sm-none col-12 col-12 mb-4">
+            <div class="card border-primary shadow h-100 py-2" [routerLink]="['/dashboard/jobslist','completed',completedJobs.length]">
+                <div class="card-body" style="padding: 10px;">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col">
+                            <div class="h6 font-weight-bold text-primary text-uppercase mb-1">Completed Jobs</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{completedJobs.length}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class=" d-block d-sm-none text-center">
+        <h4 style="color: tomato;font-weight: 800;">Open Jobs</h4>
+    </div>
+    <div *ngIf="pendingJobs" id="carouselExampleControls" class="carousel slide d-block d-sm-none" data-ride="carousel">
+        <div class="carousel-inner" *ngIf="pendingJobs.length>0">
+            <div class="carousel-item" *ngFor="let job of pendingJobs; let j=index" [class.active]="j==0">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body" style="padding: 10px;">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col" [routerLink]="['/dashboard/jobdetails',job.id]">
+                                    <div class="h6 font-weight-bold text-warning text-uppercase mb-1">J{{ padLeft(job.id, '0', 5)}}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{job.title}}</div>
+                                    <div class="p mb-0">Date: {{job.date | date: 'dd-MM-yyyy'}}</div>
+                                    <div class="p mb-0">Arrival Time: {{timeFormat(job.time)}}</div>
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="text-center" style="display: flex;">
+                                        <div *ngFor="let q of job.swms_forms">
+                                            <a [routerLink]="['/dashboard/accept&sign',job.id,q.form_link, '']"><button title="Add Signature" class="btn btn-primary fa fa-file"></button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center card mb-4 border-left-warning shadow h-100 py-2" *ngIf="pendingJobs.length==0">
+            <div class=" card-body">
+                <h2 style="font-weight: 800;">No Jobs Open</h2>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Accepted Jobs -->
+    <!-- <div class=" d-block d-sm-none text-center">
+        <h4 style="color: rgb(63, 131, 7);font-weight: 800;">Accepted Jobs</h4>
+    </div>
+    <div *ngIf="acceptedJobs" id="carouselExampleControls1" class="carousel slide d-block d-sm-none" data-ride="carousel">
+        <div class="carousel-inner" *ngIf="acceptedJobs.length>0">
+            <div class="carousel-item" *ngFor="let job of acceptedJobs; let j=index" [class.active]="j==0">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body" style="padding: 10px;">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col" [routerLink]="['/dashboard/jobdetails',job.id]">
+                                    <div class="h6 font-weight-bold text-success text-uppercase mb-1">J{{ padLeft(job.id, '0', 5)}}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{job.title}}</div>
+                                    <div class="p mb-0">Date: {{job.date | date: 'dd-MM-yyyy'}}</div>
+                                    <div class="p mb-0">Arrival Time: {{timeFormat(job.time)}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="text-center" style="display: flex;">
+                                        <div *ngFor="let q of job.swms_forms">
+                                            <a href="{{api.imageUrl + q.form_link}}" target="_blank"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center card mb-4 border-left-success shadow h-100 py-2" *ngIf="acceptedJobs.length==0">
+            <div class=" card-body">
+                <h2 style="font-weight: 800;">No Jobs Accepted</h2>
+            </div>
+        </div>
+    </div> -->
+    <!-- Completed Jobs -->
+    <!-- <div class=" d-block d-sm-none text-center">
+        <h4 style="color: rgb(7, 19, 131);font-weight: 800;">Completed Jobs</h4>
+    </div>
+    <div *ngIf="completedJobs" id="carouselExampleControls1" class="carousel slide d-block d-sm-none" data-ride="carousel">
+        <div class="carousel-inner" *ngIf="completedJobs.length>0">
+            <div class="carousel-item" *ngFor="let job of completedJobs; let j=index" [class.active]="j==0">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body" style="padding: 10px;">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col" [routerLink]="['/dashboard/jobdetails',job.id]">
+                                    <div class="h6 font-weight-bold text-primary text-uppercase mb-1">J{{ padLeft(job.id, '0', 5)}}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{job.title}}</div>
+                                    <div class="p mb-0">Date: {{job.date | date: 'dd-MM-yyyy'}}</div>
+                                    <div class="p mb-0">Arrival Time: {{timeFormat(job.time)}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="text-center" style="display: flex;">
+                                        <div *ngFor="let q of job.swms_forms">
+                                            <a href="{{api.imageUrl + q.form_link}}" target="_blank"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center card mb-4 border-left-success shadow h-100 py-2" *ngIf="completedJobs.length==0">
+            <div class=" card-body">
+                <h2 style="font-weight: 800;">No Jobs Completed</h2>
+            </div>
+        </div>
+    </div> -->
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4 d-none d-md-block">
+        <div class="card-header py-3">
+            <div class="row">
+                <h6 class="m-0 font-weight-bold text-primary col-xl-6">All Jobs</h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive" *ngIf="jobs.length > 0">
+                <table class="table table-bordered" datatable>
+                    <thead>
+                        <tr>
+                            <th>JOB_Id</th>
+                            <th>Title</th>
+                            <th>Client Name</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>SWMS Documents</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let job of jobs; let j=index">
+                            <td><a [routerLink]="['/dashboard/jobdetails',job.jobs.id]">J{{ padLeft(job.jobs.id, '0', 5)}}</a></td>
+                            <td>{{job.jobs.title}}</td>
+                            <td>{{job.jobs.client_name}}</td>
+                            <td>{{job.jobs.date | date: 'dd/MM/yyyy'}}</td>
+                            <td>
+                                <a><button title="Pending" *ngIf="job.jobs.status == 'pending'" class="btn btn-warning">Pending</button></a>
+                                <a><button title="Accepted" *ngIf="job.jobs.status == 'accepted'" class="btn btn-success">Accepted & Signed</button></a>
+                                <a><button title="Completed" *ngIf="job.jobs.status == 'completed'" class="btn" style="text-transform: capitalize; color: white;background-color: purple;">Completed</button></a>
+                            </td>
+                            <td>
+                                <div class="text-center" style="display: flex;" *ngIf="job.jobs.status == 'pending'">
+                                    <div *ngFor="let q of job.jobs.swms_forms">
+                                        <!-- <a href="{{api.imageUrl + q.form_link}}" target="_blank" (click)="AddSignature(job.jobs.id,q.id)"><button title="Add Signature" class="btn btn-primary fa fa-file"></button></a> -->
+                                        <a [routerLink]="['/dashboard/accept&sign',job.jobs.id,q.form_link, '']"><button title="Add Signature" class="btn btn-primary fa fa-file"></button></a>
+                                    </div>
+                                </div>
+                                <div class="text-center" style="display: flex;" *ngIf="job.jobs.status != 'pending'">
+                                    <div *ngFor="let q of job.jobs.swms_forms">
+                                        <a href="{{api.imageUrl + q.form_link}}" target="_blank"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a>
+                                        <!-- <a [routerLink]="['/dashboard/accept&sign',job.jobs.id,q.form_link, '']"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a> -->
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Calendar -->
+    <div class="row text-center">
+        <div class="col-12 ">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Calendar</h6>
+                </div>
+                <div class="card-body">
+                    <full-calendar [options]="calendarOptions" deepChangeDetection="true"></full-calendar>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body d-none d-md-block" [hidden]="disPlayjob">
+        <div class="table-responsive" *ngIf="jobsList.length > 0">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>JOB_Id</th>
+                        <th>Title</th>
+                        <th>Client Name</th>
+                        <th>Date</th>
+                        <th>Employee</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let job of jobsList; let j=index">
+                        <td><a [routerLink]="['/dashboard/jobdetails',job.id]">{{job.title}}</a></td>
+                        <td>{{job.name}}</td>
+                        <td>{{job.client_name}}</td>
+                        <td>{{job.date | date: 'dd/MM/yyyy'}}</td>
+                        <td>
+                            <a><button title="Pending" *ngIf="job.status == 'pending'" class="btn btn-warning">Pending</button></a>
+                            <a><button title="Accepted" *ngIf="job.status == 'accepted'" class="btn btn-success">Accepted</button></a>
+                            <a><button title="Completed" *ngIf="job.status == 'completed'" class="btn btn-success">Completed</button></a>
+                        </td>
+                        <td>
+                            <div class="text-center" style="display: flex;">
+                                <div *ngFor="let q of job.swms_forms">
+                                    <a href="{{api.imageUrl + q.form_link}}" target="_blank"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<ngx-spinner></ngx-spinner>

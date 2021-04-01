@@ -1,10 +1,9 @@
 <div class="hero-image">
     <div class="top-right">
-        <div class="card border-0">
-            <img class="img-fluid text-center" width="85%" src="../../../../assets/static/logo.png" alt="Card image cap">
-            <div class="card-body" style="background-color: white;">
-                <h1 class="card-title">Sign In</h1>
-                <p class="card-text">Welcome back! Please login to your account.</p>
+        <div class="card border-0 " style="background: transparent;margin-top: 70px;">
+            <img class="img-fluid text-center" src="/assets/static/image.png" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text" style="color: rgb(0, 0, 0);">Welcome back! Please login to your account.</p>
                 <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()" id="login-form" class="needs-validation">
                     <div class="form-label-group">
                         <!-- <label for="emailaddress">Email address</label> -->
@@ -29,7 +28,7 @@
                             <a [routerLink]="['/forgetpassword']">Forget Password</a>
                         </div> -->
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="submitted || loginForm.invalid">Sign In Now</button>
+                    <button class="btn btn-lg btn-danger btn-block" type="submit" [disabled]="submitted || loginForm.invalid">Sign In Now</button>
 
                 </form>
                 <!-- <div style="margin-top: 5px;">
@@ -37,8 +36,9 @@
                 </div> -->
             </div>
         </div>
-        <div class="text-center">
-            <p style="color: #00BADF;">&copy; Contractors 2020. ALL RIGHTS RESERVED.</p>
+        <div class="text-center" style="position: fixed;
+        width: 100%;">
+            <p style="color: #000000;">&copy; Tradeviser Pty.Ltd. ALL RIGHTS RESERVED.</p>
         </div>
 
     </div>

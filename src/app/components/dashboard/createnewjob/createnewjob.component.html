@@ -1,27 +1,29 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary col-xl-6" *ngIf="type=='new'">Create New Client</h6>
-        <h6 class="m-0 font-weight-bold text-primary col-xl-6" *ngIf="type!='new'">Update Client</h6>
+        <h6 class="m-0 font-weight-bold text-primary col-xl-6" *ngIf="type=='new'">Create New Job</h6>
+        <h6 class="m-0 font-weight-bold text-primary col-xl-6" *ngIf="type!='new'">Update Job</h6>
     </div>
     <div class="card-body">
         <form [formGroup]="jobDetails">
-            <mat-form-field appearance="outline" class="mat-form-field-width">
+
+            <mat-form-field appearance="outline" class="mat-form-field-width" *ngIf="type == 'new'">
                 <mat-label>Select Employee</mat-label>
-                <mat-select formControlName="employee">
-                    <mat-option *ngFor="let form of employees" [value]="form">{{form}}</mat-option>
+                <mat-select name="employee" multiple formControlName="employee">
+                    <mat-option *ngFor="let form of employees" value="{{form.id}}">{{form.f_name}} {{form.l_name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="mat-form-field-width">
                 <mat-label>Job Title</mat-label>
                 <input matInput placeholder="Job Title*" name="first" formControlName="title" required>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="mat-form-field-width">
-                <mat-label>Job Description</mat-label>
-                <textarea matInput placeholder="Job Description*" formControlName="description" name="lastName" required></textarea>
-            </mat-form-field>
+            <!-- <textarea matInput placeholder="Job Description*" formControlName="description" name="lastName" required></textarea> -->
+            <!-- </mat-form-field> -->
             <mat-form-field appearance="outline" class="mat-form-field-width">
                 <mat-label>Date</mat-label>
-                <input matInput [min]="minDates" type="date" placeholder="Job Date*" formControlName="date" name="streetAddress" required>
+                <!-- <input matInput [min]="minDates" type="date" placeholder="Job Date*" formControlName="date" name="streetAddress" required> -->
+                <input matInput [min]="minDates" [matDatepicker]="dp3" disabled formControlName="date" required>
+                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                <mat-datepicker #dp3 disabled="false"></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="outline" class="mat-form-field-width">
                 <mat-label>Time</mat-label>
@@ -37,31 +39,122 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="mat-form-field-width">
                 <mat-label>Phone Number</mat-label>
-                <input matInput placeholder="Phone Number*" formControlName="clientPhone" type="number" name="country" required>
+                <input maxlength="10" matInput placeholder="Phone Number*" formControlName="clientPhone" type="text" name="country" required>
             </mat-form-field>
-            <div class="d-flex">
-                <mat-form-field appearance="outline" class="mat-form-field-width">
-                    <mat-label>Select Forms</mat-label>
-                    <mat-select formControlName="formType">
-                        <mat-option *ngFor="let form of formTypes" [value]="form">{{form}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div class="mat-form-field-width mt-3" *ngIf="this.jobDetails.get('formType').value != ''">
-                    <!-- <mat-form-field appearance="outline" > -->
-                    <input class="form-control" type="file" formControlName="formLink" (change)="onFileChange($event)">
+            <div class="row" *ngIf="type=='new'">
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input type="checkbox" formControlName="formType" (change)="checkChange($event)" [(ngModel)]="check1" name="check1" class="form-check-input" id="remeber" required="true">
+                        <label class="form-check-label" for="remeber">SWMS Painting</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" *ngIf="check1">
+                        <div class="row ">
+                            <div class="custom-file col-md-12">
+                                <input accept=".pdf" type="file" formControlName="PaintLink" (change)="onFileChange($event, 'paint')" type="file" class="custom-file-input" required="true">
+                                <label class="custom-file-label" for="customFile">SWMS Painting</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <a class="btn btn-success" style="color: white;" *ngIf="file1">Selected</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-danger" style="color: white;" *ngIf="file1" (click)="removeSelectedFile('paint')"><i class="fas fa-fw fa-times"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input type="checkbox" formControlName="formType" (change)="checkChange($event)" [(ngModel)]="check2" name="check2" class="form-check-input" id="remeber" required="true">
+                        <label class="form-check-label" for="remeber">SWMS Plastering</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" *ngIf="check2">
+                        <div class="row  d-sm-flex  justify-content-between mb-4">
+                            <div class="custom-file col-md-12">
+                                <input accept=".pdf" type="file" formControlName="PlastLink" (change)="onFileChange($event, 'plast')" type="file" class="custom-file-input" required="true">
+                                <label class="custom-file-label" for="customFile">SWMS Plastering</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <a class="btn btn-success" style="color: white;" *ngIf="file2">Selected</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-danger" style="color: white;" *ngIf="file2" (click)="removeSelectedFile('plast')"><i class="fas fa-fw fa-times"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input type="checkbox" formControlName="formType" (change)="checkChange($event)" [(ngModel)]="check3" name="check3" class="form-check-input" id="remeber" required="true">
+                        <label class="form-check-label" for="remeber">SWMS Carpentry </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" *ngIf="check3">
+                        <div class="row  d-sm-flex  justify-content-between mb-4">
+                            <div class="custom-file col-md-12">
+                                <input accept=".pdf" type="file" formControlName="SWMPLink" (change)="onFileChange($event, 'swmp')" type="file" class="custom-file-input" required="true">
+                                <label class="custom-file-label" for="customFile">SWMS Carpentry </label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <a class="btn btn-success" style="color: white;" *ngIf="file3">Selected</a>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-danger" style="color: white;" *ngIf="file3" (click)="removeSelectedFile('swmp')"><i class="fas fa-fw fa-times"></i></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- <mat-form-field appearance="outline" class="mat-form-field-width" *ngIf="type=='new'"> -->
+            <!-- <mat-label>Choose FileType</mat-label>
+                <mat-select formControlName="formType">
+                    <mat-option value="SWMS Painting">SWMS Painting</mat-option>
+                    <mat-option value="SWMS Plastering">SWMS Plastering</mat-option>
+                    <mat-option value="SWMS">SWMS</mat-option>
+                </mat-select> -->
+            <!-- <mat-checkbox class="example-margin" formControlName="formType" [(ngModel)]="check1">SWMS Painting</mat-checkbox>
+            <mat-checkbox class="example-margin" formControlName="formType" [(ngModel)]="check2">SWMS Plastering</mat-checkbox>
+            <mat-checkbox class="example-margin" formControlName="formType" [(ngModel)]="check3">SWMS</mat-checkbox> -->
+            <!-- </mat-form-field> -->
+            <!-- <div class="d-flex" *ngIf="type=='new'">
+                <div class="mat-form-field-width mt-3" *ngIf="check1">
+                    <mat-label>SWMS Painting</mat-label>
+                    <input placeholder="Choose SWMPS" class="form-control" accept=".pdf" type="file" formControlName="PaintLink" (change)="onFileChange($event, 'paint')">
+                </div>
+                <div class="mat-form-field-width mt-3" *ngIf="check2">
+                    <mat-label>SWMS Plastering</mat-label>
+                    <input placeholder="Choose SWMPS" class="form-control" accept=".pdf" type="file" formControlName="PlastLink" (change)="onFileChange($event, 'plast')">
+                </div>
+                <div class="mat-form-field-width mt-3" *ngIf="check3">
+                    <mat-label>SWMS</mat-label>
+                    <input placeholder="Choose SWMPS" class="form-control" accept=".pdf" type="file" formControlName="SWMPLink" (change)="onFileChange($event, 'swmp')">
+                </div>
+            </div> -->
             <!-- <mat-icon ngxMatFileInputIcon>folder</mat-icon> -->
             <!-- </mat-form-field> -->
+            <angular-editor class="mat-form-field-width" placeholder="Job Description*" formControlName="description" [config]="editorConfig"></angular-editor>
+
             <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Notes</mat-label>
-                <textarea matInput placeholder="Notes*" formControlName="notes" name="lastName" required></textarea>
+                <textarea matInput placeholder="Notes" formControlName="notes" name="lastName"></textarea>
             </mat-form-field>
             <div *ngIf="type=='new'">
-                <button (click)="createJob()" mat-raised-button color="primary">Create New Client</button>
+                <button (click)="createJob()" mat-raised-button color="primary" [disabled]="jobDetails.invalid">Create New Job</button>
             </div>
             <div *ngIf="type!='new'">
-                <button (click)="updateJobs()" mat-raised-button color="primary">Update Client</button>
+                <button (click)="updateJobs()" mat-raised-button color="primary">Update Job</button>
             </div>
         </form>
     </div>

@@ -18,6 +18,7 @@ import { ChartsModule } from 'ng2-charts';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmationComponent } from './common/confirmation/confirmation.component';
 import {MatDialogModule} from '@angular/material';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {MatDialogModule} from '@angular/material';
     NgxSpinnerModule,
     NgxMatFileInputModule,
     MatDialogModule,
+    AngularEditorModule,
   ],
   providers: [
     NgxSpinnerService

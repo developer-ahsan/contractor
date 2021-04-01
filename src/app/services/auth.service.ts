@@ -16,7 +16,6 @@ export class AuthService {
 
   // Auth User
   public currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
-  public isAdmin = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('isAdmin')));
   public currentUser = this.currentUserSubject.asObservable();
 
   constructor(
@@ -34,8 +33,7 @@ export class AuthService {
     this.currentUserSubject.next(user);
   }
   public setIsAdmin(user: any) {
-    localStorage.setItem('isAdmin', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+    localStorage.setItem('isAdmin', user);
   }
 
   public isLoggedIn() {
@@ -49,7 +47,6 @@ export class AuthService {
     // );
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('UserName');
   }
 
   handleResponse(data) {

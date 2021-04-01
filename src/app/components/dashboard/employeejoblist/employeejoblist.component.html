@@ -1,0 +1,134 @@
+<div class="p-2">
+    <div class="mb-3 card border-4 border-warning p-2">
+        <form [formGroup]="filterForm" (ngSubmit)="filterJobs()">
+            <div class="row mb-2">
+                <div class="col">
+                    <label for="formGroupExampleInput">Start Date</label>
+
+                    <input formControlName="start" type="date" class="form-control">
+                </div>
+                <div class="col">
+                    <label for="formGroupExampleInput">End Date</label>
+                    <input formControlName="end" type="date" class="form-control">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-warning btn-block" [disabled]="filterForm.invalid">Filter</button>
+
+        </form>
+    </div>
+    <div *ngIf="type=='pending'" class="d-block d-sm-none">
+        <div class="text-center">
+            <h4 style="text-transform: capitalize;color: orange;font-weight: 800;">{{type}} Jobs</h4>
+        </div>
+        <div *ngIf="jobs">
+            <div *ngIf="length!=0">
+                <div *ngFor="let job of jobs; let j=index">
+                    <div class="col-xl-4 col-md-6 mb-4" *ngIf="job.jobspending!=null">
+                        <div class="card border-4 border-warning shadow h-100 py-2">
+                            <div class="card-body" style="padding: 10px;">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col" [routerLink]="['/dashboard/jobdetails',job.jobspending.id]">
+                                        <div class="h6 font-weight-bold text-warning text-uppercase mb-1">J{{ padLeft(job.jobspending.id, '0', 5)}}</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{job.jobspending.title}}</div>
+                                        <div class="p mb-0">Date: {{job.jobspending.date | date: 'dd-MM-yyyy'}}</div>
+                                        <div class="p mb-0">Arrival Time: {{timeFormat(job.jobspending.time)}}</div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="text-center" style="display: flex;">
+                                            <div *ngFor="let q of job.jobspending.swms_forms">
+                                                <a [routerLink]="['/dashboard/accept&sign',job.jobspending.id,q.form_link, '']"><button title="Add Signature" class="btn btn-primary fa fa-file"></button></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center card mb-4 border-4 border-warning shadow h-100 py-2" *ngIf="length=='0'">
+                <div class=" card-body">
+                    <h2 style="font-weight: 800;">No Jobs Open</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="type=='accepted'" class="d-block d-sm-none">
+        <div class="text-center">
+            <h4 style="text-transform: capitalize;color: green;font-weight: 800;">{{type}} Jobs</h4>
+        </div>
+        <div *ngIf="jobs">
+            <div *ngIf="length!=0">
+                <div *ngFor="let job of jobs; let j=index">
+                    <div class="col-xl-4 col-md-6 mb-4" *ngIf="job.jobsaccepted!=null">
+                        <div class="card border-4 border-success shadow h-100 py-2">
+                            <div class="card-body" style="padding: 10px;">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col" [routerLink]="['/dashboard/jobdetails',job.jobsaccepted.id]">
+                                        <div class="h6 font-weight-bold text-success text-uppercase mb-1">J{{ padLeft(job.jobsaccepted.id, '0', 5)}}</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{job.jobsaccepted.title}}</div>
+                                        <div class="p mb-0">Date: {{job.jobsaccepted.date | date: 'dd-MM-yyyy'}}</div>
+                                        <div class="p mb-0">Arrival Time: {{timeFormat(job.jobsaccepted.time)}}</div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="text-center" style="display: flex;">
+                                            <div *ngFor="let q of job.jobsaccepted.swms_forms">
+                                                <a href="{{api.imageUrl + q.form_link}}" target="_blank"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center card mb-4 border border-success shadow h-100 py-2" *ngIf="length==0">
+                <div class=" card-body">
+                    <h2 style="font-weight: 800;">No Jobs Open</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="type=='completed'" class="d-block d-sm-none">
+        <div class="text-center">
+            <h4 style="text-transform: capitalize;color: rgb(0, 30, 128);font-weight: 800;">{{type}} Jobs</h4>
+        </div>
+        <div *ngIf="jobs">
+            <div *ngIf="length!=0">
+                <div *ngFor="let job of jobs; let j=index">
+                    <div class="col-xl-4 col-md-6 mb-4" *ngIf="job.jobscompleted!=null">
+                        <div class="card border-4 border-primary shadow h-100 py-2">
+                            <div class="card-body" style="padding: 10px;">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col" [routerLink]="['/dashboard/jobdetails',job.jobscompleted.id]">
+                                        <div class="h6 font-weight-bold text-primary text-uppercase mb-1">J{{ padLeft(job.jobscompleted.id, '0', 5)}}</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{job.jobscompleted.title}}</div>
+                                        <div class="p mb-0">Date: {{job.jobscompleted.date | date: 'dd-MM-yyyy'}}</div>
+                                        <div class="p mb-0">Arrival Time: {{timeFormat(job.jobscompleted.time)}}</div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="text-center" style="display: flex;">
+                                            <div *ngFor="let q of job.jobscompleted.swms_forms">
+                                                <a href="{{api.imageUrl + q.form_link}}" target="_blank"><button title="{{q.form_type}}" class="btn btn-primary fa fa-file"></button></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center card mb-4 border border-success shadow h-100 py-2" *ngIf="length==0">
+                <div class=" card-body">
+                    <h2 style="font-weight: 800;">No Jobs Open</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner></ngx-spinner>

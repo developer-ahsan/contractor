@@ -1,0 +1,313 @@
+<div class="card" style="margin: 10px;padding: 8px;">
+
+    <div class="row" *ngIf="jobsList">
+        <div class="col-xl-3 col-lg-3" *ngIf="isAdmin == 'admin' || isAdmin == 'subadmins'">
+
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Assigned Employees</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body text-center" *ngFor="let item of jobsList.jobassigned">
+                    <h4>{{item.employees.f_name}} {{item.employees.l_name}}</h4>
+                    <p style="margin: 0px;">{{item.employees.email}}</p>
+                    <p>{{item.employees.phone}}</p>
+                </div>
+            </div>
+            <div class="card shadow mb-4" *ngIf="isAdmin == 'admin' || isAdmin == 'subadmins' && jobsList.status != 'completed'">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Date & Time</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <p> {{jobsList.date | date: 'dd-MM-yyyy'}}</p>
+                    <p> {{timeFormat(jobsList.time)}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3" *ngIf="isAdmin == 'employee'">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Client Details</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body text-center">
+                    <h4>{{jobsList.client_name}}</h4>
+                    <p style="margin: 0px;">{{jobsList.client_phone}}</p>
+                    <p>{{jobsList.client_address}}</p>
+                    <p> {{jobsList.date | date: 'dd-MM-yyyy'}} {{timeFormat(jobsList.time)}}</p>
+                </div>
+            </div>
+            <div class="card shadow mb-4" *ngIf="isAdmin == 'employee'">
+                <!-- Card Header - Dropdown -->
+                <div *ngIf="jobsList.status == 'pending'">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Accept This Job</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <a [routerLink]="['/dashboard/accept&sign',id,jobsList.swms_forms[0].form_link]"><button title="Click this to accept Job" class="btn btn-primary fa fa-file"> Accept Job</button></a>
+                    </div>
+                </div>
+
+                <!-- <div *ngIf="jobsList.status == 'completed'">
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h6 class="m-0 font-weight-bold text-primary">Job is Completed</h6>
+                  </div>
+                  <div class="card-body">
+                      <a><button class="btn btn-success fa fa-check-circle-o"> Job Completed</button></a>
+                  </div>
+              </div> -->
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9" *ngIf="jobsList">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Job Details</h6>
+                    <button *ngIf="jobsList.status == 'pending'" class="btn btn-warning" style="text-transform: capitalize;">Pending</button>
+                    <button *ngIf="jobsList.status == 'accepted'" class="btn btn-success" style="text-transform: capitalize;">Accepted & Signed</button>
+                    <button *ngIf="jobsList.status == 'completed'" class="btn" style="text-transform: capitalize; color: white;background-color: purple;">Completed</button>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h3>{{jobsList.title}}</h3>
+                    <p innerHtml="{{jobsList.description}}"></p>
+                    <p>Notes: {{jobsList.notes}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="jobsList && isAdmin=='admin'">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12" *ngIf="jobsList.status == 'completed'">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Share</h6>
+                    </div>
+                    <div class="card-body" style="display: flex;">
+                        <div style="margin: 4px;">
+                            <button class="btn btn-primary" (click)="sendEmail()">Share Via Manual Email</button>
+                            <!-- <button class="btn btn-primary ml-5" (click)="JobCompletedEmail()">Share Via Auto Email</button> -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12" *ngIf="jobsList.status != 'pending'">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Forms</h6>
+                    </div>
+                    <div class="card-body" style="display: flex;">
+                        <div style="margin: 4px;" *ngFor="let job of jobsList.swms_forms">
+                            <a href="{{api.imageUrl + job.form_link}}" target="_blank"><button class="btn btn-primary fa fa-file">{{job.form_type}}</button></a>
+                        </div>
+                        <button *ngIf="jobsList.status == 'pending'" class="btn btn-warning" style="text-transform: capitalize;">Pending</button>
+                        <button *ngIf="jobsList.status == 'accepted'" class="btn btn-success" style="text-transform: capitalize;">Accepted & Signed</button>
+                        <button *ngIf="jobsList.status == 'completed'" class="btn" style="text-transform: capitalize; color: white;background-color: purple;">Completed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="jobsList">
+        <div class="row" *ngIf="jobsList.status == 'accepted' || jobsList.status == 'completed'">
+            <div class="col-xl-12 col-lg-12" *ngIf="isAdmin == 'employee' && jobsList.status == 'accepted'">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Images Before Job</h6>
+                        <div>
+                            <!-- <button class="btn btn-primary btn-sm" (click)="compressFile('start')">Choose</button> -->
+                            <input (change)="uploadImage($event,'start')" type="file" accept=".png,.jpg,.jpeg,.HEIF,.HEVC,.heic" style="width: 100px;">
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body" *ngIf="startImages.length > 0">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Image</th>
+                                <th>Delete</th>
+                            </tr>
+                            <tbody>
+                                <tr *ngFor="let item of startImages">
+                                    <td><img width="60px" src="{{api.imageUrl + item.filepath}}" alt="" srcset=""></td>
+                                    <td>
+                                        <a (click)="deleteImage(item.id)" href="javascript:void(0)" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [expandable]="true">
+                            <ngx-dropzone-label>Drop Here!</ngx-dropzone-label>
+                            <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove(f)" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files;let j=index" [file]="f">
+                                <ngx-dropzone-label>{{ j+1 }} ({{ f.type }})</ngx-dropzone-label>
+                            </ngx-dropzone-image-preview>
+                        </ngx-dropzone> -->
+                        <!-- <button (click)="onUpload('start')">Upload</button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12" *ngIf="startImages.length > 0 && jobsList.status == 'completed'">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Images Before Start Job</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div *ngIf="startImages.length > 0" class="card">
+                            <div class="row">
+                                <div class="col-6" *ngFor="let item of startImages">
+                                    <div class="img-thumbnail mr-2">
+                                        <a href="{{api.imageUrl + item.filepath}}" target="_blank">
+                                            <img width="100px" src="{{api.imageUrl}}{{item.filepath}}">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12" *ngIf="isAdmin == 'employee' && jobsList.status == 'accepted' && startImages.length > 0">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Images After Job</h6>
+                        <div>
+                            <!-- <button class="btn btn-primary btn-sm" (click)="compressFile('complete')">Choose</button> -->
+                            <input (change)="uploadImage($event,'complete')" style="width: 100px;" type="file" accept=".png,.jpg,.jpeg,.HEIF,.HEVC,.heic">
+
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body" *ngIf="CompleteImages.length > 0">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Image</th>
+                                <th>Delete</th>
+                            </tr>
+                            <tbody>
+                                <tr *ngFor="let item of CompleteImages">
+                                    <td><img width="60px" src="{{api.imageUrl + item.filepath}}" alt="" srcset=""></td>
+                                    <td>
+                                        <a (click)="deleteImage(item.id)" href="javascript:void(0)" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <ngx-dropzone (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" [expandable]="true">
+                            <ngx-dropzone-label>Drop Here!</ngx-dropzone-label>
+                            <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove(f)" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files;let j=index" [file]="f">
+                                <ngx-dropzone-label>{{ j+1 }} ({{ f.type }})</ngx-dropzone-label>
+                            </ngx-dropzone-image-preview>
+                        </ngx-dropzone>
+                        <button (click)="onUpload('complete')">Upload</button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12" *ngIf="CompleteImages.length > 0 && jobsList.status == 'completed'">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Images After Job Completion</h6>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div *ngIf="startImages.length > 0" class="card">
+                            <div class="row">
+                                <div class="col-6" *ngFor="let item of CompleteImages">
+                                    <div class="img-thumbnail mr-2">
+                                        <a href="{{api.imageUrl + item.filepath}}" target="_blank">
+
+                                            <img width="100px" src="{{api.imageUrl}}{{item.filepath}}">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Job Notes -->
+<div class="col-xl-12 col-lg-12" *ngIf="isAdmin=='employee' || jobsList">
+    <div *ngIf="jobsList.status == 'accepted' && CompleteImages.length > 0 && startImages.length > 0">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Complete This Job</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <textarea class="form-control" placeholder="Any Notes" name="notes" [(ngModel)]="ngnotes"></textarea>
+            <br/>
+            <a (click)="JobCompleted()"><button title="Click this to Complete Job" class="btn btn-primary fa fa-check-circle-o"> Complete Job</button></a>
+        </div>
+    </div>
+</div>
+
+
+<!-- Show Pdf -->
+
+
+<div class="row canvas_div_pdf" [hidden]="!hideDisplay">
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4" style="background-color: white;">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Images Before Start Job</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div *ngIf="startImages.length > 0" class="card">
+                    <div class="row">
+                        <div class="col-6 border" *ngFor="let item of startImages">
+                            <div class="img-thumbnail mr-2">
+                                <a href="{{api.imageUrl + item.filepath}}" target="_blank">
+                                    <img class="img-fluid" style="width: 100%;" src="{{api.imageUrl}}{{item.filepath}}">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4" style="background-color: white;">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Images After Job Completion</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div *ngIf="CompleteImages.length > 0" class="card">
+                    <div class="row">
+                        <div class="col-6 border" *ngFor="let item of CompleteImages">
+                            <div class="img-thumbnail mr-2">
+                                <a href="{{api.imageUrl + item.filepath}}" target="_blank">
+                                    <img class="img-fluid" style="width: 100%;" src="{{api.imageUrl}}{{item.filepath}}">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ngx-spinner></ngx-spinner>
